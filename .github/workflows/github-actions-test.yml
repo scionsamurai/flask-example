@@ -16,6 +16,7 @@ jobs:
 
       - name: Change to temp Directory
         run: |
+          mkdir /tmp/test
           cd /tmp/test
 
       - name: Checkout code

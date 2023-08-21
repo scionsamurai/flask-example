@@ -19,7 +19,7 @@ jobs:
         working-directory: /tmp
 
       - name: Copy Repository to Application Directory
-        script: |
+        run: |
           rsync -az . /home/test
 
       - name: Build Docker Image

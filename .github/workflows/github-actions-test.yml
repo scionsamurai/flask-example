@@ -16,12 +16,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            sudo mkdir -p /path/to/your/app
-            rsync -az . /path/to/your/app
+            sudo mkdir -p /home/test
+            rsync -az . /home/test
 
       - name: Build Docker Image
         run: |
-          cd /path/to/your/app
+          cd /home/test
           docker build -t my-flask-application:${{ github.sha }} -t 
 
       - name: Deploy Docker Image

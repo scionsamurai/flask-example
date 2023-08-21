@@ -5,7 +5,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up SSH connection and create temporary directory
+      - name: Connect to Linode VM
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.LINODE_VM_IP }}
@@ -13,26 +13,22 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
-            tmp_dir=$(mktemp -d)
-            echo "Temporary directory created: $tmp_dir"
 
       - name: Checkout code
         uses: actions/checkout@v2
+        working-directory: /tmp
 
-      - name: Copy Repository to Linode VM
-        run: |
-          rsync -az /home/test/ $tmp_dir/
-        continue-on-error: true  # Continue even if rsync fails
+      - name: Copy Repository to Application Directory
+        script: |
+          rsync -az . /home/test
 
       - name: Build Docker Image
         run: |
-          cd $tmp_dir
-          docker build -t my-flask-application:${{ github.sha }} .
+          cd /home/test
+          docker build -t my-flask-application:${{ github.sha }} -t 
 
       - name: Deploy Docker Image
         run: |
-          cd $tmp_dir
           docker-compose up -d
           docker image prune -f
 
@@ -46,3 +42,4 @@ jobs:
           host: ${{ secrets.LINODE_VM_IP }}
           port: 8000
           timeout: 300s
+          

@@ -1,5 +1,5 @@
 name: Deploy Flask Application to Linode VM
-run-name: ${{ github.actor }} is testing out actions 🚀
+run-name: ${{ github.actor }} is testing out more actions 🚀
 on: [push]
 jobs:
   deploy:

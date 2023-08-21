@@ -5,7 +5,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Connect to Linode VM
+      - name: Set up SSH connection and create temporary directory
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.LINODE_VM_IP }}
@@ -13,7 +13,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-
+          
       - name: Checkout code
         uses: actions/checkout@v2
         working-directory: /tmp
@@ -42,4 +42,3 @@ jobs:
           host: ${{ secrets.LINODE_VM_IP }}
           port: 8000
           timeout: 300s
-          

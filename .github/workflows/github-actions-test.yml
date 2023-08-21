@@ -14,9 +14,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
 
+      - name: Change to temp Directory
+        run: |
+          cd /tmp/test
+
       - name: Checkout code
         uses: actions/checkout@v2
-        working-directory: /tmp
 
       - name: Copy Repository to Application Directory
         run: |

@@ -24,6 +24,7 @@ jobs:
 
       - name: Copy Repository to Application Directory
         run: |
+          mkdir /home/test
           chmod 777 /home/test
           rsync -az /tmp/test /home/test
 

@@ -5,7 +5,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Connect to Linode VM
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy Repository to Linode VM
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.LINODE_VM_IP }}
@@ -13,21 +16,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           password: ${{ secrets.SSH_PASSWORD }}
-
-      - name: Copy Repository to Linode VM
-        run: |
-          sudo mkdir -p /home/test
-          rsync -az . /home/test
-
-      - name: Build Docker Image
-        run: |
-          cd /home/test
-          docker build -t my-flask-application:${{ github.sha }} -t 
-
-      - name: Deploy Docker Image
-        run: |
-          docker-compose up -d
-          docker image prune -f
+          script: |
+            sudo mkdir -p /path/to/your/app
+            rsync -az . /path/to/your/app
+            cd /path/to/your/app
+            docker build -t my-flask-application:${{ github.sha }} -t 
+            docker-compose up -d
+            docker image prune -f
 
   health-check:
     runs-on: ubuntu-latest

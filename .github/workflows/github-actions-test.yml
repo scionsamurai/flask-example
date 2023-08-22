@@ -19,7 +19,7 @@ jobs:
           script: |
             sudo mkdir -p /tmp/test
             cd /tmp/test
-            git clone https://github.com/scionsamurai/flask-example.git .
+            git clone ${{ github.repository }} .
             rsync -az . /home/test2
             cd .. && sudo rm -R test
             cd /home/test2

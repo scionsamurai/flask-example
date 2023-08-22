@@ -5,9 +5,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Copy Repository to Linode VM
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -17,21 +14,18 @@ jobs:
           port: 22
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            sudo mkdir -p /home/test2
-            rsync -az . /home/test2
             cd /home/test2
-            docker build -t my-flask-application:${{ github.sha }}
-            docker-compose up -d
-            docker image prune -f
+            git clone https://github.com/scionsamurai/flask-example.git .
 
 
-  health-check:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Wait for Application
-        uses: jwalton/wait-for-it@master
-        with:
-          host: ${{ secrets.LINODE_VM_IP }}
-          port: 8000
-          timeout: 300s
+
+  # health-check:
+  #   runs-on: ubuntu-latest
+  #   needs: deploy
+  #   steps:
+  #     - name: Wait for Application
+  #       uses: jwalton/wait-for-it@master
+  #       with:
+  #         host: ${{ secrets.LINODE_VM_IP }}
+  #         port: 8000
+  #         timeout: 300s

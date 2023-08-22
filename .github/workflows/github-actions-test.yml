@@ -24,8 +24,8 @@ jobs:
 
       - name: Copy Repository to Application Directory
         run: |
+          chmod 777 /home
           mkdir /home/test
-          chmod 777 /home/test
           rsync -az /tmp/test /home/test
 
       - name: Build Docker Image

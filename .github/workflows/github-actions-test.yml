@@ -1,38 +1,27 @@
 name: Deploy Flask Application to Linode VM
-run-name: ${{ github.actor }} is testing out more actions 🚀
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy Repository to Linode VM
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Connect to Linode VM
+        uses: appleboy/ssh-action@v0.4.0
         with:
           host: ${{ secrets.LINODE_VM_IP }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          password: ${{ secrets.SSH_PASSWORD }}
 
-      - name: Change to temp Directory
+      - name: Copy Repository to Linode VM
         run: |
-          mkdir /tmp/test
-          cd /tmp/test
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Copy Repository to Application Directory
-        run: |
-          chmod 777 /home/test
-          mkdir /home/test
-          rsync -az /tmp/test /home/test
+          sudo mkdir -p /path/to/your/app
+          rsync -az . /path/to/your/app
 
       - name: Build Docker Image
         run: |
-          cd /home/test
+          cd /path/to/your/app
           docker build -t my-flask-application:${{ github.sha }} -t 
 
       - name: Deploy Docker Image

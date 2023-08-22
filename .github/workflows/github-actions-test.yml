@@ -17,7 +17,11 @@ jobs:
           port: 22
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            rsync -az $GITHUB_WORKSPACE/ /home/test2
+            sudo mkdir -p /tmp/test
+            cd /tmp/test
+            git clone https://github.com/scionsamurai/flask-example.git .
+            rsync -az . /home/test2
+            cd .. && sudo rm -R test
             cd /home/test2
             docker build -t my-flask-application:${{ github.sha }}
             docker-compose up -d

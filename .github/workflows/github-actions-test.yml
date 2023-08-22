@@ -7,6 +7,8 @@ jobs:
     steps:
       - name: Deploy repoy to container on linode server
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          repo_url: "https://github.com/${{ github.repository }}.git"
         with:
           host: ${{ secrets.LINODE_VM_IP }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -16,7 +18,7 @@ jobs:
           script: |
             sudo mkdir -p /tmp/test
             cd /tmp/test
-            git clone ${{ github.repo.git_url }} .
+            git clone $repo_url .
             rsync -az . /home/test2
             cd .. && sudo rm -R test
             cd /home/test2

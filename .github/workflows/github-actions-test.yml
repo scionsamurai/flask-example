@@ -5,7 +5,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy Repository to Linode VM
+      - name: Deploy repoy to container on linode server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.LINODE_VM_IP }}
@@ -16,7 +16,7 @@ jobs:
           script: |
             sudo mkdir -p /tmp/test
             cd /tmp/test
-            git clone ${{ github.repository }} .
+            git clone https://github.com/${{ github.repo.owner }}/${{ github.repo.name }}.git .
             rsync -az . /home/test2
             cd .. && sudo rm -R test
             cd /home/test2

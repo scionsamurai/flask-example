@@ -24,7 +24,7 @@ jobs:
 
       - name: Copy Repository to Application Directory
         run: |
-          ls /tmp/test
+          mkdir /home/test
           rsync -az /tmp/test /home/test
 
       - name: Build Docker Image
